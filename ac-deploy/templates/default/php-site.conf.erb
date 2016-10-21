@@ -1,0 +1,33 @@
+[<%= @application[:document_root].sub("/", "-") %>]
+
+listen = /tmp/<%= @application[:php][:socket_name] %>
+listen.owner = nginx
+listen.group = nginx
+listen.mode = 0660
+
+user = <%= @application[:user_name] %>
+group = <%= @application[:group_name] %>
+
+pm = dynamic
+pm.max_children = 50
+pm.start_servers = 1
+pm.min_spare_servers = 1
+pm.max_spare_servers = 5
+pm.max_requests = 150 
+
+
+request_slowlog_timeout = <%= @application[:php][:slowlog_timeout] %>
+slowlog = <%= @application[:log_dir] %>/php-slow_log
+
+<% @application[:php][:php_flag].each do |argument, value| %>
+php_flag[<%= argument %>] = <%= value %>
+<% end %>
+<% @application[:php][:php_value].each do |argument, value| %>
+php_value[<%= argument %>] = <%= value %>
+<% end %>
+<% @application[:php][:php_admin_flag].each do |argument, value| %>
+php_admin_flag[<%= argument %>] = <%= value %>
+<% end %>
+<% @application[:php][:php_admin_value].each do |argument, value| %>
+php_admin_value[<%= argument %>] = <%= value %>
+<% end %>

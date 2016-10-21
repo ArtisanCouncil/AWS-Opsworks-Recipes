@@ -1,0 +1,60 @@
+server {
+    listen <%= @application[:nginx][:port].to_i %>;
+    server_name <%= @application[:domains].join(" ") %>;
+
+    client_max_body_size 128m;
+
+    root <%= @application[:nginx][:root] %>; 
+    index<% @application[:nginx][:index].each do |index| %> <%= index %><% end %>;
+
+    access_log <%= @application[:nginx][:access_log] %> combined;
+    error_log <%= @application[:nginx][:error_log] %> error;
+
+    fastcgi_param PHP_VALUE "opcache.enable_cli=0";
+
+    <% if @application[:nginx][:headers] %>
+    <% @application[:nginx][:headers].each do |header, value| %>
+    add_header "<%= header %>" "<%= value %>";
+    <% end %>
+    add_header X-Frame-Options "SAMEORIGIN";
+
+    <% end %>
+    <% if @application[:nginx][:error_page] %>
+    <% @application[:nginx][:error_page].each do |error_code, error_path| %>
+    error_page <%= error_code %> <%= error_path %>;
+    <% end %>
+
+    <% end %>
+    <% @application[:nginx][:location].each do |location, path| %>
+    location <%= location %> {
+      <% path.each do |argument, value| %>
+        <% if argument == 'route-laravel' %>
+        set $laravel_dir "<%= location %>";
+        rewrite ^([^.]*[^/])$ $1/ permanent;
+        rewrite ^<%= location %>/(.*)$ /$1 break;
+        index <%= location %>/server.php;
+        try_files <%= location %>/public/$uri <%= location %>/public/$uri/ <%= location %>/server.php?$args;
+        <% elsif argument == 'route-yii' %>
+        try_files $uri $uri/ <%= location %>/index.php?$args;
+        <% elsif argument != 'symlink' %>
+        <%= argument %> <%= value %>;
+        <% end %>
+      <% end %>
+    }
+
+    <% end %>
+    location ~ \.php$ {
+        if ($laravel_dir = false) {
+            set $laravel_dir "";
+        }
+        fastcgi_pass unix:/tmp/<%= @application[:php][:socket_name] %>;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param LARAVEL_DIR $laravel_dir;
+        fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_intercept_errors on;
+        fastcgi_read_timeout <%= @application[:nginx][:timeout] %>;
+        fastcgi_connect_timeout <%= @application[:nginx][:timeout] %>;
+        fastcgi_send_timeout <%= @application[:nginx][:timeout] %>;
+    }
+}
