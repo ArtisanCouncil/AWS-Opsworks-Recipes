@@ -1,5 +1,5 @@
 #Metadata
-name				"ac-deploy"
+name				        "ac-deploy"
 maintainer          "Artisan Council"
 maintainer_email    "adam.kinnane@artisancouncil.com"
 description         "Configures & Deploys Applications"
@@ -16,4 +16,4 @@ end
 
 
 #Set Dependencies
-#depends ‘ac-setup'
+depends 'ac-setup'
