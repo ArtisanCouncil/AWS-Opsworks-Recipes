@@ -1,0 +1,34 @@
+server {
+    listen 80 default_server;
+    server_name _;
+
+    client_max_body_size 128m;
+
+    root /usr/share/nginx/html;
+    index index.php index.html index.htm;
+
+    access_log <%= node[:setup][:nginx][:log_dir] %>/access_log combined;
+    error_log <%= node[:setup][:nginx][:log_dir] %>/error_log error;
+
+    location /elb-status {
+        access_log off;
+        return 200;
+    }
+
+    location / {
+
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/tmp/php-fpm.default.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_intercept_errors on;
+        include fastcgi_params;
+    }
+
+    location ~ /\.git {
+       deny all;
+    } 
+}
+

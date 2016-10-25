@@ -1,0 +1,58 @@
+# AMAZON LINUX TEMPLATE
+user www-data;
+#group www-data; 
+worker_processes <%= node[:setup][:nginx][:worker_processes] %>;
+
+error_log <%= node[:setup][:nginx][:log_dir] %>/error.log;
+pid /var/run/nginx.pid;
+
+events {
+  #worker_connections <%= node[:setup][:nginx][:worker_connections] %>;
+  worker_connections 512;
+}
+
+http {
+  include <%= node[:setup][:nginx][:conf_dir] %>/mime.types;
+  default_type application/octet-stream;
+
+  log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                  '$status $body_bytes_sent "$http_referer" '
+                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+  access_log <%= node[:setup][:nginx][:log_dir] %>/access_log;
+
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+
+  real_ip_header <%= node[:setup][:nginx][:real_ip_header] %>;
+  set_real_ip_from <%= node[:setup][:nginx][:set_real_ip_from] %>;
+
+  proxy_connect_timeout <%= node[:setup][:nginx][:proxy_connect_timeout] %>;
+  proxy_send_timeout <%= node[:setup][:nginx][:proxy_send_timeout] %>;
+  proxy_read_timeout <%= node[:setup][:nginx][:proxy_read_timeout] %>;
+  send_timeout <%= node[:setup][:nginx][:send_timeout] %>;
+
+  <% if node[:setup][:nginx][:keepalive] == "on" %>
+  keepalive_timeout <%= node[:setup][:nginx][:keepalive_timeout] %>;
+  <% end %>
+
+  gzip <%= node[:setup][:nginx][:gzip] %>;
+  gzip_static <%= node[:setup][:nginx][:gzip_static] %>;
+  gzip_http_version <%= node[:setup][:nginx][:gzip_http_version] %>;
+  gzip_comp_level <%= node[:setup][:nginx][:gzip_comp_level] %>;
+  gzip_proxied <%= node[:setup][:nginx][:gzip_proxied] %>;
+  gzip_types <%= node[:setup][:nginx][:gzip_types].join(' ') %>;
+  gzip_vary <%= node[:setup][:nginx][:gzip_vary] %>;
+  gzip_disable "<%= node[:setup][:nginx][:gzip_disable] %>";
+
+  proxy_buffering <%= node[:setup][:nginx][:proxy_buffering] %>;
+  fastcgi_keep_conn <%= node[:setup][:nginx][:fastcgi_keep_conn] %>;
+
+  client_max_body_size <%= node[:setup][:nginx][:client_max_body_size] %>;
+
+  #server_names_hash_bucket_size <%= node[:setup][:nginx][:server_names_hash_bucket_size] %>;
+  server_names_hash_bucket_size 128;
+
+  include <%= node[:setup][:nginx][:site_dir] %>/*.conf;
+}
