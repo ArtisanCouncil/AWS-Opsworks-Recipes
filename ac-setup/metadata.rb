@@ -5,7 +5,6 @@ maintainer_email    "adam.kinnane@artisancouncil.com"
 description         "Installs & configures PHP & Nginx for staging & production servers"
 version             "1.0.0"
 license             "Proprietary - All Rights Reserved"
-privacy
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 
 

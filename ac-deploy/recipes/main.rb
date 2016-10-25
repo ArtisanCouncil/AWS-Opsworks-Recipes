@@ -10,7 +10,7 @@ Chef::Log.level = :debug
 #
 #===============================================================================# 
 # 
-=begin
+
 
 Chef::Log.info "AC-DEPLOY::main.rb: Creating /tmp/.ssh & other ssh files"
 directory "/tmp/.ssh" do
@@ -330,4 +330,4 @@ end # end of application loop
 #end
 #end 
 
-=end
+
