@@ -1,0 +1,25 @@
+<%= node[:setup][:nginx][:log_dir] %>/*log {
+    create 0644 nginx nginx
+    daily
+    rotate 1
+    missingok
+    notifempty
+    compress
+    sharedscripts
+    postrotate
+        /etc/init.d/nginx reopen_logs
+    endscript
+}
+
+<%= node[:setup][:nginx][:www_dir] %>/*/logs/www-*log {
+    create 0644 nginx nginx
+    daily
+    rotate 1
+    missingok
+    notifempty
+    compress
+    sharedscripts
+    postrotate
+        /etc/init.d/nginx reopen_logs
+    endscript
+}

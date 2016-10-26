@@ -1,0 +1,23 @@
+<%= node[:setup][:php][:log_dir] %>/*log {
+    rotate 1
+    daily
+    missingok
+    notifempty
+    sharedscripts
+    compress
+    postrotate
+        /bin/kill -SIGUSR1 `cat /var/run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}
+
+<%= node[:setup][:nginx][:www_dir] %>/*/logs/php-*log {
+    rotate 1
+    daily
+    missingok
+    notifempty
+    sharedscripts
+    compress
+    postrotate
+        /bin/kill -SIGUSR1 `cat /var/run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}
