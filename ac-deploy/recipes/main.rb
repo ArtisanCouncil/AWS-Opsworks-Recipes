@@ -81,7 +81,7 @@ node[:deploy].each do |application, deploy|
     case node[:deploy][application][:scm][:scm_type]
     when "git"
 
-        Chef::Log.info "AC-DEPLOY::main.rb: 2 Creating ssh key file for deployment #{node[:deploy][application][:scm][:ssh_key]} " 
+        #Chef::Log.info "AC-DEPLOY::main.rb: 2 Creating ssh key file for deployment #{node[:deploy][application][:scm][:ssh_key]} " 
         if node[:deploy][application][:scm][:ssh_key] 
             file "/root/.ssh/id_deploy" do
                 content node[:deploy][application][:scm][:ssh_key]

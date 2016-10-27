@@ -117,7 +117,7 @@ node[:deploy].each do |application, deploy|
   # set the username to be the application shortname. If no user or group ID has
   # been specified, then use the Nginx default user.
 
-  Chef::Log.info "AC-Deploy: Setting Application ID, username & groupname to: " << application[0, 32]
+  #Chef::Log.info "AC-Deploy: Setting Application ID, username & groupname to: " << application[0, 32]
   default[:deploy][application][:id]         =
   default[:deploy][application][:user_name]  = application[0, 32]
   default[:deploy][application][:group_name] = application[0, 32]
