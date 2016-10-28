@@ -49,7 +49,11 @@ define :laravel do
 
 #Chef::Log.info "AC-DEPLOY: run composer commands - current user: #{node['current_user']}"
 #Chef::Log.info "AC-DEPLOY: run composer commands - user should be: #{node[:deploy][application][:user_name]}"
+Chef::Log.info "AC-DEPLOY: run composer commands composer #{update_flags} update"
+Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
+Chef::Log.info "AC-DEPLOY: run composer install flags #{install_flags}"
 
+		#TODO: ensure directories exist
 
         update_flags = "--no-scripts"  
         # run install with flags generated above 
