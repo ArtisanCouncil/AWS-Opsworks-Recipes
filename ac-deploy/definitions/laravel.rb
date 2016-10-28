@@ -47,15 +47,15 @@ define :laravel do
         end 
 
 
-Chef::Log.info "AC-DEPLOY: run composer commands - current user: #{node['current_user']}"
-Chef::Log.info "AC-DEPLOY: run composer commands - user should be: #{node[:deploy][application][:user_name]}"
+#Chef::Log.info "AC-DEPLOY: run composer commands - current user: #{node['current_user']}"
+#Chef::Log.info "AC-DEPLOY: run composer commands - user should be: #{node[:deploy][application][:user_name]}"
 
 
         update_flags = "--no-scripts"  
         # run install with flags generated above 
         Chef::Log.info "Running composer update with flags #{update_flags}"
         execute "composer update" do
-	        user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
+	        user "deploy" # "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
             command "composer #{update_flags} update"
             ignore_failure false
@@ -63,7 +63,7 @@ Chef::Log.info "AC-DEPLOY: run composer commands - user should be: #{node[:deplo
 
         Chef::Log.info "Running composer dump-autoload"
         execute "composer dump-autoload" do
-	        user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
+	        user "deploy" # "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
             command "composer dump-autoload"
             ignore_failure false
@@ -79,5 +79,8 @@ Chef::Log.info "AC-DEPLOY: run composer commands - user should be: #{node[:deplo
             ignore_failure false
             creates "#{release_path}/src/composer.lock" 
         end
+        
+        
+        Chef::Log.info "AC-DEPLOY: completed Laravel deploy"
     end
 end
