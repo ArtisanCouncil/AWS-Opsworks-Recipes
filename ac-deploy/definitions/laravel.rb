@@ -46,6 +46,9 @@ define :laravel do
             end
         end 
 
+
+Chef::Log.info "AC-DEPLOY: run composer commands - current user: #{node['current_user']}"
+
         update_flags = "--no-scripts"  
         # run install with flags generated above 
         Chef::Log.info "Running composer update with flags #{update_flags}"
