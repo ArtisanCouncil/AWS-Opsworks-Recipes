@@ -59,7 +59,7 @@ Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
         execute "composer update" do
 	        user "deploy" # "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
-            command "sudo composer #{update_flags} update"
+            command "composer #{update_flags} update"
             ignore_failure false
         end
 
@@ -67,7 +67,7 @@ Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
         execute "composer dump-autoload" do
 	        user "deploy" # "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
-            command "sudo composer dump-autoload"
+            command "composer dump-autoload"
             ignore_failure false
         end
 
