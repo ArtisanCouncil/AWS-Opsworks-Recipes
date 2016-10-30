@@ -68,7 +68,7 @@ Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
 	    user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
             command "composer dump-autoload"
-            ignore_failure false
+            ignore_failure true #false
         end
 
 
@@ -78,7 +78,7 @@ Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
         execute "composer install" do
             cwd "#{release_path}/src"
             command "composer #{install_flags} install"
-            ignore_failure false
+            ignore_failure true #false
             creates "#{release_path}/src/composer.lock" 
         end
         
