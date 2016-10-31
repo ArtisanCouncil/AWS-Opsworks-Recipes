@@ -139,10 +139,10 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:environment_variables][:MAIL_PASSWORD] = "Ancl370NZ/6rOBgtWyiRxgVbidhdTp5GX+L0kHS4DQ4t"
 
 	#database settings
-  default[:deploy][application][:environment_variables][:DB_HOST] = deploy[:database][:host] rescue "prod-db.cf6zjaksexix.us-west-1.rds.amazonaws.com"
+  default[:deploy][application][:environment_variables][:DB_HOST] = deploy[:database][:host] rescue "artisan-council-db.c8o9bmww3z4i.us-west-1.rds.amazonaws.com"
   default[:deploy][application][:environment_variables][:DB_DATABASE] = deploy[:database][:database] rescue ""
   default[:deploy][application][:environment_variables][:DB_USERNAME] = deploy[:database][:username] rescue "root"
-  default[:deploy][application][:environment_variables][:DB_PASSWORD] = deploy[:database][:password] rescue "b055"
+  default[:deploy][application][:environment_variables][:DB_PASSWORD] = deploy[:database][:password] rescue "ac-dAta-87"
 
 	#AWS settings
   default[:deploy][application][:environment_variables][:AWS_ACCESS_KEY_ID] = "AKIAJDAJOYN7L77X7WSQ"
