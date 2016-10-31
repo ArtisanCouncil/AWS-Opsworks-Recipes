@@ -49,7 +49,7 @@ define :laravel do
 
 #Chef::Log.info "AC-DEPLOY: run composer commands - current user: #{node['current_user']}"
 #Chef::Log.info "AC-DEPLOY: run composer commands - user should be: #{node[:deploy][application][:user_name]}"
-Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
+#Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
 
 		#TODO: ensure directories exist and have correct permissions??
 
@@ -60,7 +60,7 @@ Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
 	    user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
             command "composer #{update_flags} update"
-            ignore_failure true #false
+            ignore_failure false
         end
 
         Chef::Log.info "Running composer dump-autoload"
@@ -68,7 +68,7 @@ Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
 	    user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
             command "composer dump-autoload"
-            ignore_failure true #false
+            ignore_failure false
         end
 
 
@@ -76,9 +76,10 @@ Chef::Log.info "AC-DEPLOY: run composer release path #{release_path}/src"
         # run install with flags generated above 
         Chef::Log.info "Running composer install with flags #{install_flags}"
         execute "composer install" do
+	    user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src"
             command "composer #{install_flags} install"
-            ignore_failure true #false
+            ignore_failure false
             creates "#{release_path}/src/composer.lock" 
         end
         
