@@ -57,7 +57,7 @@ define :laravel do
         # run install with flags generated above 
         Chef::Log.info "Running composer update with flags #{update_flags}"
         execute "composer update" do
-	    user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
+	    #user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
             command "composer #{update_flags} update"
             ignore_failure false
@@ -65,7 +65,7 @@ define :laravel do
 
         Chef::Log.info "Running composer dump-autoload"
         execute "composer dump-autoload" do
-	    user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
+	    #user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src" # TOD
             command "composer dump-autoload"
             ignore_failure false
@@ -76,7 +76,7 @@ define :laravel do
         # run install with flags generated above 
         Chef::Log.info "Running composer install with flags #{install_flags}"
         execute "composer install" do
-	    user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
+	    #user "#{node[:deploy][application][:user_name]}" #added to ensure correct user
             cwd "#{release_path}/src"
             command "composer #{install_flags} install"
             ignore_failure false
